@@ -115,10 +115,10 @@ public class Plateau {
 		} else if (DiagonalVic2(choixLigne, joueurEnCours, choixCol) == true) {
 			changeDeJoueur();
 			return true;
-		}else if (DiagonalVic(choixLigne, joueurEnCours, choixCol) == true) {
+		} else if (DiagonalVic(choixLigne, joueurEnCours, choixCol) == true) {
 			changeDeJoueur();
 			return true;
-		}else{
+		} else {
 			changeDeJoueur();
 			return false;
 		}
@@ -128,16 +128,12 @@ public class Plateau {
 	public void joueUnePartie()
 
 	{
-		int choix = choixDuJoueur() - 1;
-		System.out.println("choix :" + choix);
-		while (!aGagne(choix)) {
-			System.out.println("choix :" + choix);
+		int choix;
+		do {
 			changeDeJoueur();
-			colonnes[choix].ajouter(joueur);
-			System.out.println("choix :" + choix);
 			choix = choixDuJoueur() - 1;
-
-		}
+			colonnes[choix].ajouter(joueur);
+		} while (!aGagne(choix));
 
 	}
 
@@ -162,11 +158,7 @@ public class Plateau {
 	private boolean VerticalVic(int NumLigne, int joueurEnCours, int choixCol) {
 
 		int nbrPionAligne = 0;
-		System.out.println("V numligne : " + NumLigne);
-		System.out.println("V joueurEnCours : " + joueurEnCours + joueur);
-		System.out.println("V choixCol : " + choixCol);
-
-		for (int i = NumLigne - 4; i <= NumLigne; i++) {
+		for (int i = NumLigne - 4; i < NumLigne; i++) {
 			int test = colonnes[choixCol].getPions(i);
 			if (test == joueurEnCours) {
 				nbrPionAligne++;
@@ -174,7 +166,7 @@ public class Plateau {
 				nbrPionAligne = 0;
 			}
 			if (nbrPionAligne == 3) {
-				System.out.println(joueurEnCours + "gagne");
+				System.out.println("Joueur " + joueurEnCours + " à gagné");
 				return true;
 			}
 		}
@@ -183,65 +175,61 @@ public class Plateau {
 
 	private boolean HorizontalVic(int NumLigne, int joueurEnCours, int choixCol) {
 		int nbrPionAligne = 0;
-		System.out.println("H numligne : " + NumLigne);
-		System.out.println("H joueurEnCours : " + joueurEnCours);
-		System.out.println("H choixCol : " + choixCol);
-		for (int i = choixCol - 3; i < choixCol + 3; i++) {
-			if (choixCol - 3 >= 0 && choixCol + 3 <= colonnes.length) {
-				if (colonnes[i].getPions(NumLigne) == joueurEnCours) {
+
+		for (int i = -3; i <= 3; i++) {
+			if (i + choixCol >= 0 && i + choixCol < colonnes.length) {
+				int test = colonnes[i + choixCol].getPions(NumLigne);
+				if (colonnes[i + choixCol].getPions(NumLigne) == joueurEnCours || i + choixCol == choixCol) {
 					nbrPionAligne++;
 				} else {
 					nbrPionAligne = 0;
 				}
-				if (nbrPionAligne == 3) {
-					System.out.println(joueurEnCours + "gagne");
+				if (nbrPionAligne == 4) {
+					System.out.println("Joueur " + joueurEnCours + " à gagné");
 					return true;
 				}
 			}
 		}
 		return false;
 	}
-	
+
 	private boolean DiagonalVic(int NumLigne, int joueurEnCours, int choixCol) {
 		int nbrPionAligne = 0;
-		System.out.println("H numligne : " + NumLigne);
-		System.out.println("H joueurEnCours : " + joueurEnCours);
-		System.out.println("H choixCol : " + choixCol);
-		for (int i =  - 3; i <  3; i++) {
-			System.out.println("H numligne : " + (NumLigne+i) );
-			
-			if (choixCol + i >= 0 && choixCol + i < colonnes.length && NumLigne+i >=0 && NumLigne+i < colonnes[0].pions.length) {
-				if (colonnes[choixCol+i].getPions(NumLigne+i) == joueurEnCours) {
+
+		for (int i = -3; i < 3; i++) {
+			if (choixCol + i >= 0 && choixCol + i < colonnes.length && NumLigne + i >= 0
+					&& NumLigne + i < colonnes[0].pions.length) {
+				if (colonnes[choixCol + i].getPions(NumLigne + i) == joueurEnCours) {
 					nbrPionAligne++;
-				}} else {
-					nbrPionAligne = 0;
 				}
-				if (nbrPionAligne == 3) {
-					System.out.println(joueurEnCours + "gagne");
-					return true;
-				}
+			} else {
+				nbrPionAligne = 0;
 			}
+			if (nbrPionAligne == 4) {
+				System.out.println("Joueur " + joueurEnCours + " à gagné");
+				return true;
+			}
+		}
 		return false;
 	}
+
 	private boolean DiagonalVic2(int NumLigne, int joueurEnCours, int choixCol) {
 		int nbrPionAligne = 0;
-		System.out.println("H numligne : " + NumLigne);
-		System.out.println("H joueurEnCours : " + joueurEnCours);
-		System.out.println("H choixCol : " + choixCol);
-		for (int i =  - 3; i <  3; i++) {
-			System.out.println("H numligne : " + (NumLigne+i) );
-			
-			if (choixCol + i >= 0 && choixCol + i < colonnes.length && NumLigne-i >=0 && NumLigne-i < colonnes[0].pions.length) {
-				if (colonnes[choixCol+i].getPions(NumLigne-i) == joueurEnCours) {
+
+		for (int i = -3; i < 3; i++) {
+			if (choixCol + i >= 0 && choixCol + i < colonnes.length && NumLigne - i >= 0
+					&& NumLigne - i < colonnes[0].pions.length) {
+				if (colonnes[choixCol + i].getPions(NumLigne - i) == joueurEnCours) {
 					nbrPionAligne++;
-				}} else {
-					nbrPionAligne = 0;
 				}
-				if (nbrPionAligne == 3) {
-					System.out.println(joueurEnCours + "gagne");
-					return true;
-				}
+			} else {
+				nbrPionAligne = 0;
 			}
+			if (nbrPionAligne == 4) {
+				System.out.println("Joueur " + joueurEnCours + " à gagné");
+				return true;
+			}
+		}
 		return false;
 	}
 
