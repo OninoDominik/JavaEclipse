@@ -115,7 +115,10 @@ public class Plateau {
 		} else if (DiagonalVic2(choixLigne, joueurEnCours, choixCol) == true) {
 			changeDeJoueur();
 			return true;
-		}else {
+		}else if (DiagonalVic(choixLigne, joueurEnCours, choixCol) == true) {
+			changeDeJoueur();
+			return true;
+		}else{
 			changeDeJoueur();
 			return false;
 		}
